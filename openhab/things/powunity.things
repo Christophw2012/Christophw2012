@@ -1,0 +1,38 @@
+// Powunity / Biketraxx – HTTP Binding (OpenHAB 3/4)
+//
+// Setup (DE): Datei nach $OPENHAB_CONF/things/ kopieren.
+// Token: Platzhalter YOUR_POWUNITY_TOKEN EINMAL durch den echten Token ersetzen
+//        ODER Thing in der Main UI anlegen/editieren und Query-Param dort setzen.
+//        Kein %-Platzhalter – kollidiert mit HTTP-Binding String.format (%2$s).
+//        Niemals den echten Token committen.
+//
+// Endpunkte:
+//   GET  .../status?token=...
+//   POST .../arm?token=...
+//   POST .../disarm?token=...
+
+Thing http:url:powunity "Biketraxx Powunity" [
+    baseURL="https://admin.powunity.com/api/devices/8710019504/",
+    refresh=60,
+    timeout=10000,
+    ignoreSSLErrors=false,
+    stateMethod="GET",
+    commandMethod="POST",
+    contentType="text/plain"
+] {
+    Channels:
+        // Roh-Status (JSON). JSONPATH-Pfade ggf. an echte Response anpassen – siehe Items/Regel.
+        Type string : status [
+            mode="READONLY",
+            stateExtension="status?token=YOUR_POWUNITY_TOKEN"
+        ]
+
+        // Manuelles Arm/Disarm über Switch (ON=arm, OFF=disarm).
+        // Armed-State aus Status kommt über Item/Regel, nicht über diesen Channel-State.
+        Type switch : armedCommand [
+            mode="WRITEONLY",
+            onValue="arm",
+            offValue="disarm",
+            commandExtension="%2$s?token=YOUR_POWUNITY_TOKEN"
+        ]
+}
