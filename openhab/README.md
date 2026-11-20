@@ -25,11 +25,18 @@ Typisch: `/etc/openhab/` (Linux-Paket) oder `/openhab/conf/` (Docker).
 Der API-Token gehört **nur** in die OpenHAB-Konfiguration, nicht ins Git.
 
 1. Öffne die Thing `http:url:powunity` in der Main UI **oder** editiere `powunity.things`.
-2. Ersetze überall den Platzhalter `%powunity.token%` durch deinen Token  
-   (Query-Parameter `?token=…` – Powunity unterstützt kein Bearer-Header-Auth für diese URLs).
+2. Ersetze überall den Platzhalter `YOUR_POWUNITY_TOKEN` vollständig durch deinen Token  
+   (Query-Parameter `?token=…` – Powunity unterstützt kein Bearer-Header-Auth für diese URLs).  
+   **Kein `%…%`-Platzhalter** – das HTTP-Binding formatiert Extensions mit `String.format` (`%2$s`); Prozentzeichen im Token-Platzhalter können die Thing auf **UNKNOWN** setzen.
 3. Speichern. Bei Datei-basiertem Config: OpenHAB lädt die Thing neu.
 
 **Empfehlung:** Token nur in der Main-UI am Thing setzen und die `.things`-Datei danach als Vorlage belassen (oder Platzhalter lokal ersetzen, Datei nicht versionieren). Token, der je in Chat/Logs stand, in der Powunity-Admin-Oberfläche rotieren.
+
+### Thing-Status UNKNOWN?
+
+1. **HTTP Binding** installiert? (Add-ons → Bindings)
+2. Platzhalter `YOUR_POWUNITY_TOKEN` wirklich durch den echten Token ersetzt (beide Vorkommen in `powunity.things`)?
+3. `openhab.log` auf HTTP-/Thing-Fehler prüfen (FormatException, 401, Timeout).
 
 ### 4. Idle-Timeout und Auto-Arm
 

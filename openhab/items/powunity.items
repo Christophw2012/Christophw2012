@@ -1,6 +1,6 @@
 // Powunity / Biketraxx – Items (OpenHAB 3/4)
 // Ablage: $OPENHAB_CONF/items/powunity.items
-// Token NICHT hier speichern – nur am HTTP-Thing (%powunity.token%).
+// Token NICHT hier speichern – nur am HTTP-Thing (YOUR_POWUNITY_TOKEN).
 
 Group gBiketraxx "Biketraxx" <bicycle>
 
