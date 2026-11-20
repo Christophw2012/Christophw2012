@@ -1,0 +1,29 @@
+// Powunity / Biketraxx – Items (OpenHAB 3/4)
+// Ablage: $OPENHAB_CONF/items/powunity.items
+// Token NICHT hier speichern – nur am HTTP-Thing (%powunity.token%).
+
+Group gBiketraxx "Biketraxx" <bicycle>
+
+// --- Steuerung / Status ---
+Switch Biketraxx_Armed "Biketraxx scharf" <shield> (gBiketraxx) {
+    channel="http:url:powunity:armedCommand",
+    autoupdate="false"
+}
+
+String Biketraxx_StatusRaw "Biketraxx Status (JSON)" (gBiketraxx) {
+    channel="http:url:powunity:status"
+}
+
+// Abgeleitete Werte (werden von der JS-Regel aus StatusRaw gesetzt)
+Switch Biketraxx_IsMoving "Biketraxx bewegt sich" <motion> (gBiketraxx)
+DateTime Biketraxx_LastMotion "Biketraxx letzte Bewegung" (gBiketraxx)
+String Biketraxx_StatusSummary "Biketraxx Kurzstatus" (gBiketraxx)
+
+// --- Auto-Arm Konfiguration ---
+Switch Biketraxx_AutoArmEnabled "Biketraxx Auto-Arm" <switch> (gBiketraxx)
+Number Biketraxx_IdleTimeoutMinutes "Biketraxx Idle-Timeout [%.0f min]" (gBiketraxx)
+Number Biketraxx_DisarmGraceMinutes "Biketraxx Disarm-Schonzeit [%.0f min]" (gBiketraxx)
+DateTime Biketraxx_DisarmGraceUntil "Biketraxx Auto-Arm pausiert bis" (gBiketraxx)
+
+// Optional: Presence/Home – wenn ON, kein Auto-Arm (später mit Präsenz verknüpfen)
+Switch Biketraxx_Home "Biketraxx zu Hause" <house> (gBiketraxx)
